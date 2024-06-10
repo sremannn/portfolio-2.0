@@ -5,7 +5,7 @@
     <link rel="icon" href="./img/Code Geass Brittania Logo by Ennuh on DeviantArt.jpg">
     </head>
 
-<body>
+<body onclick="screenClick();">
     <link href="style.css" rel="stylesheet"></link>
 
 <h3 id="hey-i-m-sreeman-">hey, i&#39;m sreeman!</h3>
@@ -51,6 +51,139 @@ CHECK OUT OFFICIAL SOCIAL MEDIA GIVEN BELOW:
 <dev class="cc">
 CC0-<span style="color: #4DBB93;">1.0</span> license by: <a href="https://github.com/sremannn/portfolio-2.0?tab=CC0-1.0-1-ov-file" target="_blank">sreeman</a>
 </dev>
+
+<audio id="backgroundMusic" src="./img/audio.mp3" loop="" playsinline="" style="display: none"></audio>
+<div id="wakeButton" class="wakeButton">
+    <a id="sleepingO" href="#">
+        <!--<iframe src="o/o.php?r=8&w=1.5&c=80-80-80"></iframe>-->
+    </a>
+</div>
+
+<div id="audioButton"><a id="audioButtonA" href="#" onclick="toggleAudio(); return false;"><img id="soundImage" src="images/sound_paused.gif" width="30" height="30"></a></div>
+	
+<script>
+	
+	var screenWasClicked = false;
+	var backgroundMusic = document.getElementById("backgroundMusic");
+	var firstTap = true;
+		
+	function toggleAudio(){
+		if(!backgroundMusic.paused){
+			pauseAudio();
+			userAudioSetting = 0;
+		} else {
+			playAudio();
+			screenWasClicked = true;
+			document.getElementById('audioButtonA').style.animation = 'none';
+			userAudioSetting = 1;
+		}
+	}
+
+	function playAudio(){
+		//console.log("Play audio");
+		backgroundMusic.play();
+		document.getElementById('soundImage').src = "https://mind.app/sound_200.gif";
+	}
+
+	function pauseAudio(){
+		//console.log("Pause audio");
+		backgroundMusic.pause();
+		document.getElementById('soundImage').src = "https://mind.app/sound_paused.gif";
+	}
+	
+	function screenClick(){
+		
+		//console.log('Screen clicked or tapped');
+		
+		if(firstTap==true){
+			firstTap = false;
+		}
+			
+		if(screenWasClicked==true){
+			return;
+		}
+		toggleAudio();
+	}
+		
+	// Visibility (for music pausing)
+	var tabVisibility = "hidden";
+	var userAudioSetting = 1;
+
+	function visibilitySetup(){
+
+		// Standards:
+		if (tabVisibility in document){
+			document.addEventListener("visibilitychange", onchange);
+		} else if ((tabVisibility = "mozHidden") in document){
+			document.addEventListener("mozvisibilitychange", onchange);
+		} else if ((tabVisibility = "webkitHidden") in document){
+			document.addEventListener("webkitvisibilitychange", onchange);
+		} else if ((tabVisibility = "msHidden") in document){
+			document.addEventListener("msvisibilitychange", onchange);
+		// IE 9 and lower:
+		} else if ("onfocusin" in document){
+			document.onfocusin = document.onfocusout = onchange;
+		// All others:
+		} else{
+			window.onpageshow = window.onpagehide
+			= window.onfocus = window.onblur = onchange;
+		} 
+	}
+
+	function onchange(evt) {
+		var v = "visible", h = "hidden",
+		evtMap = {
+		  focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h
+		};
+
+		evt = evt || window.event;
+		if (evt.type in evtMap){
+		  document.body.className = evtMap[evt.type];
+		} else {
+		  document.body.className = this[tabVisibility] ? "hidden" : "visible";
+		}
+		//console.log('Is visible: '+document.body.className);
+
+		if(document.body.className=='visible'){
+			if(firstTap==false){
+				if(userAudioSetting==true){
+				   backgroundMusic.play();
+				}
+			}
+		} else {
+
+			backgroundMusic.pause();
+		}
+	}
+		
+	function fadeIn(element, callback) {
+		var op = 0.1;  // initial opacity
+		element.style.display = 'block';
+		var timer = setInterval(function () {
+			if (op >= 1.0){
+				clearInterval(timer);
+				callback();
+			}
+			element.style.opacity = op;
+			element.style.filter = 'alpha(opacity=' + op * 100  + ")";
+			op += op * 0.1;
+		}, 10);
+	}
+
+	function fadeOut(element, callback) {
+		var op = 1;  // initial opacity
+		var timer = setInterval(function () {
+			if (op <= 0.1){
+				clearInterval(timer);
+				element.style.display = 'none';
+				callback();
+			}
+			element.style.opacity = op;
+			element.style.filter = 'alpha(opacity=' + op * 100  + ")";
+			op -= op * 0.1;
+		}, 10);
+	}
+</script>
 
 </body>
 </html>
